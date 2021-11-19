@@ -1,6 +1,7 @@
 #' Read a Task PDF from ServiceNow
 #'
 #' @param file Path to PDF
+#' @importFrom readr read_fwf fwf_widths
 #'
 #' @return a sntask() object
 #' @export
@@ -12,9 +13,7 @@ read_sntask <- function(file) {
   resp_tbl_lines <- lines[15:20]
 
   task_kv <- setNames(
-    suppressWarnings(
-      readr::read_fwf(resp_tbl_lines, readr::fwf_widths(rep(40, 4)))
-      ),
+    suppressWarnings(read_fwf(resp_tbl_lines, fwf_widths(rep(40, 4)))),
     NA
     )
   resp_tbl <- na.omit(setNames(rbind(task_kv[,1:2], task_kv[,3:4]), cn))
