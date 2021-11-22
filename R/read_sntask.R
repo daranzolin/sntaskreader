@@ -10,7 +10,7 @@ read_sntask <- function(file) {
   cn <- c("key", "value")
   x <- pdftools::pdf_text(file)
   lines <- unlist(strsplit(x, "\\n"))
-  resp_tbl_lines <- lines[15:20]
+  resp_tbl_lines <- lines[grep_range(lines, "^Number", "^Configuration item:")]
 
   task_kv <- setNames(
     suppressWarnings(read_fwf(resp_tbl_lines, fwf_widths(rep(40, 4)))),
@@ -19,9 +19,7 @@ read_sntask <- function(file) {
   resp_tbl <- na.omit(setNames(rbind(task_kv[,1:2], task_kv[,3:4]), cn))
   resp_tbl[["key"]] <- gsub(":$", "", resp_tbl[["key"]])
 
-  desc_start <- min(grep("Purpose =", lines))
-  desc_end <- grep("Staff Member = ", lines)
-  desc <- paste(lines[desc_start:(desc_end - 1)], collapse = " ")
+  desc <- paste(lines[grep_range(lines, "Purpose = ", "^Watch list:", 6)], collapse = " ")
   desc <- gsub("^Purpose = ", "", desc)
 
   more <- grep("^One-on|^Recurring|^Date Needed|^Additional Comments", lines, value = TRUE)
@@ -40,5 +38,11 @@ read_sntask <- function(file) {
     description = desc
   )
   return(out)
+}
+
+grep_range <- function(x, start_grep, end_grep, decrement = 0) {
+  s <- min(grep(start_grep, x))
+  e <- grep(end_grep, x) - decrement
+  seq(s, e, by = 1)
 }
 
