@@ -3,6 +3,7 @@
 S3method(description,sntask)
 S3method(print,sntask)
 S3method(response_table,sntask)
+export(create_readme_from_sntask)
 export(description)
 export(read_sntask)
 export(response_table)
