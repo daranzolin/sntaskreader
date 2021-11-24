@@ -12,8 +12,9 @@ read_sntask <- function(file) {
   lines <- unlist(strsplit(x, "\\n"))
   resp_tbl_lines <- lines[grep_range(lines, "^Number", "^Configuration item:")]
 
+  cw <- max(ceiling(nchar(resp_tbl_lines)/4))
   task_kv <- setNames(
-    suppressWarnings(read_fwf(resp_tbl_lines, fwf_widths(rep(40, 4)))),
+    suppressWarnings(read_fwf(resp_tbl_lines, fwf_widths(rep(cw, 4)))),
     NA
     )
   resp_tbl <- na.omit(setNames(rbind(task_kv[,1:2], task_kv[,3:4]), cn))
