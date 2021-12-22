@@ -4,7 +4,7 @@ Title: Read PDF Task Exports From Service Now
 Version: 0.1.0
 Author: David Ranzolin
 Maintainer: David Ranzolin <daranzolin@sfsu.edu>
-Description: Read PDF task exports from Service Now
+Description: Read PDF task exports from Service Now.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

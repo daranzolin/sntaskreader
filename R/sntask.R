@@ -7,7 +7,7 @@ is.sntask <- function(x) {
 }
 
 #' @export
-print.sntask <- function(x) {
+print.sntask <- function(x, ...) {
 
   cat("Responses", "\n")
   cat(rep("-", 10), "\n")

@@ -2,6 +2,7 @@
 #'
 #' @param file Path to PDF
 #' @importFrom readr read_fwf fwf_widths
+#' @importFrom stats na.omit setNames
 #'
 #' @return a sntask() object
 #' @export
@@ -25,7 +26,7 @@ read_sntask <- function(file) {
 
   more <- grep("^One-on|^Recurring|^Date Needed|^Additional Comments", lines, value = TRUE)
   more <- lapply(strsplit(more, " ="), function(x) {
-    setNames(as.data.frame(matrix(x, ncol = 2)), c("key", "value"))
+    setNames(as.data.frame(matrix(x, ncol = 2)), cn)
     }
   )
   more <- do.call(rbind, more)
