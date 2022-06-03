@@ -8,7 +8,7 @@
 #' @export
 read_sntask <- function(file) {
 
-  cn <- c("key", "value")
+  orientation <- detect_orientation(file)
   x <- pdftools::pdf_text(file)
   lines <- unlist(strsplit(x, "\\n"))
   resp_tbl_lines <- lines[grep_range(lines, "^Number", "^Configuration item:")]
@@ -18,6 +18,7 @@ read_sntask <- function(file) {
     suppressWarnings(read_fwf(resp_tbl_lines, fwf_widths(rep(cw, 4)))),
     NA
     )
+  cn <- c("key", "value")
   resp_tbl <- na.omit(setNames(rbind(task_kv[,1:2], task_kv[,3:4]), cn))
   resp_tbl[["key"]] <- gsub(":$", "", resp_tbl[["key"]])
 
@@ -48,3 +49,7 @@ grep_range <- function(x, start_grep, end_grep, decrement = 0) {
   seq(s, e, by = 1)
 }
 
+detect_orientation <- function(x) {
+  sdf <- pdftools::pdf_pagesize(x)[1,]
+  ifelse(sdf$width > sdf$height, "landscape", "portrait")
+}
